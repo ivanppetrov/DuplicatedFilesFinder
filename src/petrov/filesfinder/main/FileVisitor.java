@@ -7,29 +7,33 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import petrov.filesfinder.bean.SearchedFiles;
+import petrov.filesfinder.bean.SearchResult;
+import petrov.filesfinder.bean.VisitedFile;
 
 public class FileVisitor extends SimpleFileVisitor<Path> {
-	private SearchedFiles fileSearcher;
+	private SearchResult searchResult;
 
-	public FileVisitor(SearchedFiles fileSearcher) {
-		this.fileSearcher = fileSearcher;
+	public FileVisitor(SearchResult fileSearcher) {
+		this.searchResult = fileSearcher;
 	}
 
 	@Override
-	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-		Map<String, String> uniqueFiles = fileSearcher.getUniqueFiles();
-		List<String> duplicatedFiles = fileSearcher.getDuplicatedFiles();
-		String filePathAndName = file.getParent().toString() + "/" + file.getFileName().toString();
+	public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+		Map<VisitedFile, VisitedFile> uniqueFiles = searchResult.getUniqueFiles();
+		List<VisitedFile> duplicatedFiles = searchResult.getDuplicatedFiles();
+		VisitedFile visitedFile = new VisitedFile(path.toFile());
 
-		if (!uniqueFiles.keySet().contains(file.getFileName().toString())) {
-			uniqueFiles.put(file.getFileName().toString(), filePathAndName);
+		if (!uniqueFiles.keySet().contains(visitedFile)) {
+			uniqueFiles.put(visitedFile, visitedFile);
 		} else {
-			duplicatedFiles.add(filePathAndName);
+			VisitedFile originalFile = uniqueFiles.get(visitedFile);
+			visitedFile.setOriginalFile(originalFile);
+			duplicatedFiles.add(visitedFile);
 		}
 
-		return super.visitFile(file, attrs);
+		return FileVisitResult.CONTINUE;
 	}
 
 	@Override

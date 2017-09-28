@@ -1,18 +1,19 @@
 package petrov.filesfinder.util;
 
-import petrov.filesfinder.bean.SearchedFiles;
+import petrov.filesfinder.bean.SearchResult;
+import petrov.filesfinder.bean.VisitedFile;
 
 public class FilesPrinter {
 
-	public static void printUniqueFiles(SearchedFiles searchedFiles) {
-		for (String fileName : searchedFiles.getUniqueFiles().values()) {
-			System.out.println(fileName);
+	public static void printUniqueFiles(SearchResult searchedFiles) {
+		for (VisitedFile file : searchedFiles.getUniqueFiles().values()) {
+			System.out.println(file.toString());
 		}
 	}
 
-	public static void printDuplicatedFiles(SearchedFiles searchedFiles) {
-		for (String fileName : searchedFiles.getDuplicatedFiles()) {
-			System.out.println(fileName);
+	public static void printDuplicatedFiles(SearchResult searchedFiles) {
+		for (VisitedFile file : searchedFiles.getDuplicatedFiles()) {
+			System.out.println(file.toString());
 		}
 	}
 }

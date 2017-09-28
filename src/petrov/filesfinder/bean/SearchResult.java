@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchedFiles {
+public class SearchResult {
 	private String path;
-	private Map<String, String> uniqueFiles;
-	private List<String> duplicatedFiles;
-	
-	public SearchedFiles(String path) {
+	private Map<VisitedFile, VisitedFile> uniqueFiles;
+	private List<VisitedFile> duplicatedFiles;
+
+	public SearchResult(String path) {
 		this.path = path;
 		this.uniqueFiles = new HashMap<>();
 		this.duplicatedFiles = new ArrayList<>();
@@ -24,21 +24,20 @@ public class SearchedFiles {
 		this.path = path;
 	}
 
-	public Map<String, String> getUniqueFiles() {
+	public Map<VisitedFile, VisitedFile> getUniqueFiles() {
 		return uniqueFiles;
 	}
 
-	public void setUniqueFiles(Map<String, String> uniqueFiles) {
+	public void setUniqueFiles(Map<VisitedFile, VisitedFile> uniqueFiles) {
 		this.uniqueFiles = uniqueFiles;
 	}
 
-	public List<String> getDuplicatedFiles() {
+	public List<VisitedFile> getDuplicatedFiles() {
 		return duplicatedFiles;
 	}
 
-	public void setDuplicatedFiles(List<String> duplicatedFiles) {
+	public void setDuplicatedFiles(List<VisitedFile> duplicatedFiles) {
 		this.duplicatedFiles = duplicatedFiles;
 	}
 
-	
 }
